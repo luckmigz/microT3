@@ -37,4 +37,4 @@ Você pode assistir ao vídeo de demonstração do projeto no seguinte link: [V�
 
 ## Diagrama de Blocos 
 
-[diagrama de blocos](https://github.com/luckmigz/microT3/blob/main/diagrama%20de%20blocos.png)
+![diagrama de blocos](https://github.com/luckmigz/microT3/blob/main/diagrama%20de%20blocos.png)

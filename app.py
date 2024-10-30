@@ -6,7 +6,7 @@ import threading
 app = Flask(__name__)
 
 # Configuração do GPIO
-SENSOR_PIN = 17  # Pino GPIO onde o sensor LM393 está conectado
+SENSOR_PIN = 18 # Pino GPIO onde o sensor LM393 está conectado
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(SENSOR_PIN, GPIO.IN)
 

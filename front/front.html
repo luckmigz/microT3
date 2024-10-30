@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Sensor de Luz</title>
+    <style>
+        body {
+            transition: background-color 0.5s; /* Suaviza a transição da cor de fundo */
+        }
+        #status {
+            font-size: 48px; /* Aumenta o tamanho da fonte */
+            font-weight: bold;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .ligado {
+            background-color: green;
+        }
+        .desligado {
+            background-color: red;
+        }
+        #alertGif {
+            display: none; /* Ocultar o GIF inicialmente */
+            width: 300px; /* Ajuste o tamanho conforme necessário */
+            margin: 20px auto; /* Centraliza o GIF */
+        }
+        #pGiffy {
+            display: none; /* Ocultar o GIF inicialmente */
+            width: 300px; /* Ajuste o tamanho conforme necessário */
+            margin: 20px auto; /* Centraliza o GIF */
+        }
+        .alert {
+            animation: blink 1s linear infinite; /* Animação para piscar */
+        }
+        @keyframes blink {
+            0%, 100% { background-color: red; }
+            50% { background-color: white; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Alarme!</h1>
+    <div id="status">Carregando...</div>
+    <img id="alertGif" src="frog.gif" alt="Luz Ligada" /> 
+    <img id="pGiffy" src="diddy.gif" alt="Alerta" />
+
+    <script>
+        // Função para buscar o estado do sensor do servidor Flask
+        async function checkSensor() {
+            try {
+                // Faça uma requisição GET ao servidor Flask
+                const response = await fetch('http://10.33.161.141:5000/sensor'); // pegar IP rasp!
+                const data = await response.json();
+                
+                // Verifique o estado do sensor e atualize a interface
+                const statusElement = document.getElementById('status');
+                const alertGif = document.getElementById('alertGif');
+                const pGiffy = document.getElementById('pGiffy');
+                const body = document.body;
+
+                if (!data.light_on) {
+                    statusElement.textContent = "TUDO NOS CONFORMES!!";
+                    statusElement.className = "ligado";
+                    pGiffy.style.display = 'none'; // Oculta o GIF
+                    alertGif.style.display = 'block'; // Exibe o GIF
+                    body.classList.remove('alert'); // Remove classe de alerta
+                } else {
+                    statusElement.textContent = "ALERTA DE INTRUSO!";
+                    statusElement.className = "desligado";
+                    pGiffy.style.display = 'block'; // Oculta o GIF
+                    alertGif.style.display = 'none'; // Exibe o GIF
+                    body.classList.add('alert'); // Adiciona classe de alerta
+                }
+            } catch (error) {
+                console.error("Erro ao acessar o servidor:", error);
+            }
+        }
+
+        // Executa a função checkSensor a cada segundo para atualizar o estado
+        setInterval(checkSensor, 1000);
+    </script>
+</body>
+</html>
